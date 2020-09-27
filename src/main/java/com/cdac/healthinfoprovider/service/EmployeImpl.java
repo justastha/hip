@@ -11,11 +11,11 @@ import com.cdac.healthinfoprovider.model.Employe;
 import com.cdac.healthinfoprovider.repository.EmployeRepo;
 
 @Service
-public class EmployeImpl implements EmployeService {
+public class EmployeImpl {
 	@Autowired
 	EmployeRepo employeRepo;
 
-	@Override
+	
 	@Transactional
 	public Employe save(Employe emp) {
 		try {
@@ -25,7 +25,6 @@ public class EmployeImpl implements EmployeService {
 		return emp;
 	}
 
-	@Override
 	public List<Employe> getAllList() {
 		return employeRepo.findAll();
 	}

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.cdac.healthinfoprovider.model.Employe;
 
 @Repository
-public interface EmployeRepo extends JpaRepository<Employe, Integer> {
+public abstract class EmployeRepo implements JpaRepository<Employe, Integer> {
 
 }
