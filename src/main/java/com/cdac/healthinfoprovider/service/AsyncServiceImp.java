@@ -30,7 +30,7 @@ import com.google.gson.JsonObject;
 @Service
 public class AsyncServiceImp {
 	
-	private String Urlprefix1="https://webhook.site/3f156344-1499-4640-925d-d385045194ee";
+	private String Urlprefix1="https://webhook.site/b0da1609-1f30-43cb-a176-cacb30d935b7";
 	private String Urlprefix2="https://dev.ndhm.gov.in";
 	private String postOnDiscoverUrl =Urlprefix1+"/gateway/v0.5/care-contexts/on-discover";
 	private String postOnInitUrl = Urlprefix1+"/gateway/v0.5/links/link/on-init";
@@ -58,10 +58,13 @@ public class AsyncServiceImp {
 		patientDiscoveryResponseVo.setRequestId(patientDiscoveryRequestFb.getRequestId());
 		patientDiscoveryResponseVo.setTimestamp(patientDiscoveryRequestFb.getTimestamp());
 		patientDiscoveryResponseVo.setTransactionId(patientDiscoveryRequestFb.getTransactionId());
+		//patientDiscoveryResponseVo.resp.requestId=patientDiscoveryRequestFb.getTransactionId();
 
 		Patient patient = new Patient();
-		patient = patientDiscoveryRepoImp.getPatientCareContexts(patientDiscoveryRequestFb);
+		PatientDiscoveryRepoImp patientDiscoveryRepoImp1 = new PatientDiscoveryRepoImp();
+		patient = patientDiscoveryRepoImp1.getPatientCareContexts(patientDiscoveryRequestFb);
 		patientDiscoveryResponseVo.setPatient(patient);
+		
 		Gson gson = new Gson();
 		String patientDiscoveryResponseVoJsonStr = gson.toJson(patientDiscoveryResponseVo);
 		patientOnDiscoverCallback(patientDiscoveryResponseVoJsonStr);
@@ -123,7 +126,7 @@ public class AsyncServiceImp {
 		HttpHeaders headers = new HttpHeaders();
 		RestTemplate restTemplate = new RestTemplate();
 
-		String gatewayAccessToken = getGatewayAccessToken();
+		String gatewayAccessToken ="";// getGatewayAccessToken();
 
 		headers.set("Content-Type", "application/json");
 		headers.setBearerAuth(gatewayAccessToken);

@@ -24,17 +24,26 @@ public class PatientDiscoveryRepoImp {
 		
 		String idType=patientDiscoveryRequestFb.patient.verifiedIdentifiers.get(0).getType();
 		String idValue=patientDiscoveryRequestFb.patient.verifiedIdentifiers.get(0).getValue();
-		String name=patientDiscoveryRequestFb.patient.verifiedIdentifiers.get(0).getValue();
-		String yearOfBirth=patientDiscoveryRequestFb.patient.verifiedIdentifiers.get(0).getValue();
-		String gender=patientDiscoveryRequestFb.patient.verifiedIdentifiers.get(0).getValue();
+		
+		String name=patientDiscoveryRequestFb.patient.getName();
+		Integer yearOfBirth=patientDiscoveryRequestFb.patient.getYearOfBirth();
+		Integer yearOfBirthl=patientDiscoveryRequestFb.patient.getYearOfBirth()-6;
+		Integer yearOfBirthm=patientDiscoveryRequestFb.patient.getYearOfBirth()+6;
+		String gender=patientDiscoveryRequestFb.patient.getGender();
 		
 		try{  
-			Class.forName("com.mysql.cj.jdbc.Driver");  
+			Class.forName("org.postgresql.Driver");  
 			Connection con=DriverManager.getConnection(  
-			"jdbc:mysql://localhost:3306/db","root","");  
+			"jdbc:postgresql://10.226.80.35:5444/hmis_aiims_patna?currentSchema=ahiscl","hmisaiimsp","hmisaiimsp");  
 			 
 			Statement stmt=con.createStatement(); 
-			String query="select * from hivt_requisiton_dtl where mobile='"+idValue+"' and gender='"+gender+"' limit 1";
+			String query="select hrgnum_puk_reqd, hgnum_visitno_reqd, hgnum_visit_date_reqd, gnum_lab_code, gnum_test_code from hivt_requisition_dtl where "
+			+"hrgstr_patname_reqd='"+name+"'"
+			+"and date_part('year', hrgdt_dob_reqd) >'"+yearOfBirthl+"'"
+			+"and date_part('year', hrgdt_dob_reqd) <'"+yearOfBirthm+"'"
+			+"and gstr_gender_code_reqd='"+gender+"'"
+			+"and hrgstr_mobile_no_reqd='"+idValue+"'"
+			+" limit 1";
 			ResultSet rs=stmt.executeQuery(query); 
 			System.out.println("inside dao imlementation check pat");
 			if (rs.next()) {
@@ -53,9 +62,14 @@ public class PatientDiscoveryRepoImp {
 		for(int i=0; i<=5; i++) {
 			CareContexts ccts = new CareContexts();
 			ccts.referenceNumber="IPD-Visit_"+i;
-			ccts.display="Test00"+1;
+			ccts.display="Test00"+i;
 			patient.careContexts.add(i, ccts);
 		}
+		patient.matchedBy.add(idType);
+		patient.matchedBy.add("name");
+		patient.matchedBy.add("gender");
+		patient.matchedBy.add("yearOfBirth");
+		
 		return patient;
 	}
 

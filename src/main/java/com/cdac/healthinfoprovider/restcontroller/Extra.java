@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.cdac.healthinfoprovider.model.Employe;
 import com.cdac.healthinfoprovider.model.Users;
 import com.cdac.healthinfoprovider.model.patientdiscoveryrequest.PatientDiscoveryRequestFb;
 import com.cdac.healthinfoprovider.service.AsyncServiceImp;
@@ -80,22 +79,22 @@ public class Extra {
 		return new ResponseEntity<>(data, HttpStatus.OK);
 	}
 	
-	@PostMapping("postExternalCall")
-	public ResponseEntity<?> postProductList1(@RequestBody Employe employe) {
-		System.out.println("uri-->" + postUrl);
-		RestTemplate restTemplate = new RestTemplate();
-		String  user = null;
-		HttpEntity<Employe> request = new HttpEntity<>(employe);
-		try {
-			user = restTemplate.postForObject(postUlr1, request, String.class);
-		
-			System.out.println("result we got from postExternalCall User Created---->" + user);
-			return new ResponseEntity<>(user, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new ResponseEntity<>(user, HttpStatus.OK);
-	}
+//	@PostMapping("postExternalCall")
+//	public ResponseEntity<?> postProductList1(@RequestBody Employe employe) {
+//		System.out.println("uri-->" + postUrl);
+//		RestTemplate restTemplate = new RestTemplate();
+//		String  user = null;
+//		HttpEntity<Employe> request = new HttpEntity<>(employe);
+//		try {
+//			user = restTemplate.postForObject(postUlr1, request, String.class);
+//		
+//			System.out.println("result we got from postExternalCall User Created---->" + user);
+//			return new ResponseEntity<>(user, HttpStatus.OK);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return new ResponseEntity<>(user, HttpStatus.OK);
+//	}
 
 	@PostMapping("postData")
 	public ResponseEntity<?> postProductList(@RequestBody Users users) {
