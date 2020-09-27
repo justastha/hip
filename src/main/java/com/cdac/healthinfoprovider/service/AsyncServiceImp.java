@@ -57,7 +57,7 @@ public class AsyncServiceImp {
 		patientDiscoveryResponseVo.setTransactionId(patientDiscoveryRequestFb.getTransactionId());
 
 		Patient patient = new Patient();
-		patient = patientDiscoveryRepoImp.getPatientCareContexts(patientDiscoveryResponseVo);
+		patient = patientDiscoveryRepoImp.getPatientCareContexts(patientDiscoveryRequestFb);
 		patientDiscoveryResponseVo.setPatient(patient);
 		Gson gson = new Gson();
 		String patientDiscoveryResponseVoJsonStr = gson.toJson(patientDiscoveryResponseVo);
