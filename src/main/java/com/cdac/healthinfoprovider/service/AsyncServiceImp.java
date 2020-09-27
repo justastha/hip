@@ -29,9 +29,12 @@ import com.google.gson.JsonObject;
 
 @Service
 public class AsyncServiceImp {
-	private String postOnDiscoverUrl = "https://dev.ndhm.gov.in/gateway/v0.5/care-contexts/on-discover";
-	private String postOnInitUrl = "https://dev.ndhm.gov.in/gateway/v0.5/links/link/on-init";
-	private String postSessionUrl = "https://dev.ndhm.gov.in/gateway/v0.5/sessions";
+	
+	private String Urlprefix1="https://webhook.site/3f156344-1499-4640-925d-d385045194ee";
+	private String Urlprefix2="https://dev.ndhm.gov.in";
+	private String postOnDiscoverUrl =Urlprefix1+"/gateway/v0.5/care-contexts/on-discover";
+	private String postOnInitUrl = Urlprefix1+"/gateway/v0.5/links/link/on-init";
+	private String postSessionUrl = Urlprefix1+"/gateway/v0.5/sessions";
 	private URI postOnConfirmUrl, postOnNotifyUrl, postOnRequestUrl, postFetchModesUrl, postConfirmUrl, postInitUrl,
 			postAddContextsUrl, postNotifyUrl, getOpenidConfigurationUrl, getCertsUrl;
 
