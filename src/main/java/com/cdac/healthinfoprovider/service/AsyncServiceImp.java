@@ -98,13 +98,13 @@ public class AsyncServiceImp {
 		patAuthRespJson.addProperty("timestamp", "2020-10-01T10:28:31.085Z");
 		
 		JsonObject query = new JsonObject();
-		query.addProperty("id", "astha@sbx");
+		query.addProperty("id", patAuthJson.get("ndhmHealthID").toString());
 		query.addProperty("purpose", "LINK");
-		query.addProperty("authMode", "MOBILE_OTP");
+		query.addProperty("authMode", patAuthJson.get("authenticationMode").toString());//MOBILE_OTP
 		
 		JsonObject requester = new JsonObject();
 		requester.addProperty("type", "HIP");
-		requester.addProperty("id", "100005");
+		requester.addProperty("id", patAuthJson.get("hospitalHealthID").toString());
 		
 		query.add("requester", requester);
 		patAuthRespJson.add("query", query);
