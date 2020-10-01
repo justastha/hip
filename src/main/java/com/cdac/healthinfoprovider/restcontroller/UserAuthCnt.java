@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cdac.healthinfoprovider.model.patientdiscoveryrequest.PatientDiscoveryRequestFb;
 import com.cdac.healthinfoprovider.service.AsyncServiceImp;
+import com.google.gson.JsonObject;
 
 
 @RestController
@@ -45,6 +46,20 @@ public class UserAuthCnt {
 		}
 		return new ResponseEntity<>( HttpStatus.ACCEPTED);
 	}
+	
+	
+	@PostMapping("/init")
+	public ResponseEntity<?> postAuthInit(@RequestBody JsonObject patAuthJson) {
+		System.out.println("postOnInit:patientDiscoveryRequestFb::------------------------------------" + patAuthJson);
+		try {
+			asyncServiceImp.trigerAsyncAuthInit(patAuthJson);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>( HttpStatus.ACCEPTED);
+	}
+	
 	
 	@PostMapping("/on-init")
 	public ResponseEntity<?> postOnInit(@RequestBody PatientDiscoveryRequestFb patientDiscoveryRequestFb) {

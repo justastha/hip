@@ -37,7 +37,7 @@ public class AsyncServiceImp {
 	private String postSessionUrl = Urlprefix1+"/gateway/v0.5/sessions";
 	private URI postOnConfirmUrl, postOnNotifyUrl, postOnRequestUrl, postFetchModesUrl, postConfirmUrl, postInitUrl,
 			postAddContextsUrl, postNotifyUrl, getOpenidConfigurationUrl, getCertsUrl;
-
+	private String authInitUrl=Urlprefix1+"/v0.5/users/auth/init";
 	private static Logger log = LoggerFactory.getLogger(AsyncServiceImp.class);
 
 	@Autowired
@@ -87,6 +87,35 @@ public class AsyncServiceImp {
 
 		log.info("trigerAsyncOnInit completed");
 	}
+	
+
+	@Async("asyncExecutor")
+	public void trigerAsyncAuthInit(JsonObject patAuthJson) throws InterruptedException {
+		log.info("trigerAsyncOnInit started");
+		
+		JsonObject patAuthRespJson = new JsonObject();
+		patAuthRespJson.addProperty("requestId", "5f7a535d-a3fd-416b-b069-c97d021fbacd");
+		patAuthRespJson.addProperty("timestamp", "2020-10-01T10:28:31.085Z");
+		
+		JsonObject query = new JsonObject();
+		query.addProperty("id", "astha@sbx");
+		query.addProperty("purpose", "LINK");
+		query.addProperty("authMode", "MOBILE_OTP");
+		
+		JsonObject requester = new JsonObject();
+		requester.addProperty("type", "HIP");
+		requester.addProperty("id", "100005");
+		
+		query.add("requester", requester);
+		patAuthRespJson.add("query", query);
+		
+		Gson gson = new Gson();
+		String patAuthRespJsonStr = gson.toJson(patAuthRespJson);
+		authInitCall(patAuthRespJsonStr);
+
+		log.info("trigerAsyncOnInit completed");
+	}
+	
 
 	private JsonObject getInitGatewaySession() {
 
@@ -240,6 +269,24 @@ public class AsyncServiceImp {
 
 		return objStatus;
 	}
+	
+	public HttpStatus authInitCall(String patAuthRespJsonStr) throws InterruptedException {
+		
+		HttpHeaders headers = new HttpHeaders();
+		RestTemplate restTemplate = new RestTemplate();
+
+		String gatewayAccessToken = getGatewayAccessToken();
+
+		headers.set("Content-Type", "application/json");
+		headers.setBearerAuth(gatewayAccessToken);
+		headers.set("X-CM-ID", "sbx");
+
+		HttpEntity<String> request = new HttpEntity<String>(patAuthRespJsonStr, headers);
+		HttpStatus objStatus = restTemplate.exchange(authInitUrl, HttpMethod.POST, request, String.class)
+				.getStatusCode();
+		
+		return objStatus;
+	}
 
 	public HttpStatus confirmCallback(String patientDiscoveryResponseVoJsonStr) throws InterruptedException {
 		HttpHeaders headers = new HttpHeaders();
@@ -326,4 +373,6 @@ public class AsyncServiceImp {
 
 		return objStatus;
 	}
+
+	
 }
